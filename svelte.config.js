@@ -1,9 +1,6 @@
 import adapter from '@sveltejs/adapter-node';
-
-const config = {
+export default {
   kit: {
     adapter: adapter({ out: 'build' })
   }
 };
-
-export default config;
