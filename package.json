@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
     "dev": "vite",
-    "build": "node ./node_modules/@sveltejs/kit/svelte-kit.js sync && node ./node_modules/@sveltejs/kit/svelte-kit.js build",
+    "build": "vite build",
     "start": "node build",
     "preview": "node build",
     "prisma:generate": "prisma generate",
