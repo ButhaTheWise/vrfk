@@ -1,0 +1,17 @@
+@"
+# Node/SvelteKit
+node_modules
+.svelte-kit
+build
+# Env és titkok
+.env
+.env.*
+service-account.json
+# Prisma/SQLite
+prisma/dev.db
+*.sqlite
+*.db
+# Egyéb
+.vscode
+.DS_Store
+"@ | Set-Content .gitignore
