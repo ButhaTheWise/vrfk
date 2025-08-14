@@ -4,11 +4,18 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-    "build": "node ./node_modules/@sveltejs/kit/dist/cli.js sync && node ./node_modules/@sveltejs/kit/dist/cli.js build",
+    "dev": "vite",
+    "build": "node ./node_modules/@sveltejs/kit/svelte-kit.js sync && node ./node_modules/@sveltejs/kit/svelte-kit.js build",
     "start": "node build",
+    "preview": "node build",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy",
-    "prisma:seed": "node prisma/seed.js"
+    "prisma:seed": "node prisma/seed.js",
+    "prepare": "svelte-kit sync || echo ''",
+    "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
+    "test:unit": "vitest",
+    "test": "npm run test:unit -- --run"
   },
 	"prisma": {
     "seed": "node prisma/seed.js"
