@@ -1,7 +1,6 @@
 import { getSession } from '$lib/server/session.js';
 
 export const handle = async ({ event, resolve }) => {
-  // 1) Healthcheck: mindig azonnal 200-at adunk vissza
   if (event.url.pathname === '/health') {
     return new Response('ok', {
       status: 200,
@@ -9,7 +8,6 @@ export const handle = async ({ event, resolve }) => {
     });
   }
 
-  // 2) Eredeti session logika
   const sid = event.cookies.get('sid');
   if (sid) {
     const sess = await getSession(sid);
@@ -29,6 +27,5 @@ export const handle = async ({ event, resolve }) => {
       });
     }
   }
-
   return resolve(event);
 };

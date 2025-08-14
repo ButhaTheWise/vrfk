@@ -44,7 +44,7 @@ EXPOSE 3000
 
 # Healthcheck a /health-re (Node beépített fetch-csel)
 HEALTHCHECK --interval=10s --timeout=3s --start-period=60s --retries=5 \
-  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||3000)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+  CMD node -e "require('net').connect({host:'127.0.0.1',port:process.env.PORT||3000},()=>process.exit(0)).on('error',()=>process.exit(1))"
 
 # Indítás: migráció + (nem-blokkoló) seed, majd a node server
 CMD ["sh","-c","npm run prisma:deploy && (npx prisma db seed || echo 'Seed failed → skipping') && node build"]
