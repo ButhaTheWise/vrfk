@@ -1,16 +1,22 @@
 [phases.setup]
 nixPkgs = ["nodejs_24", "openssl", "sqlite", "bash", "curl", "wget"]
-nixpkgsArchive = "<IDE ÍRD AZ ÚJ NIXPKGS COMMIT HASH-T>"  # pl. a nixos-24.11 vagy nixos-unstable aktuális commitja
+nixOverlays = ["https://github.com/railwayapp/nix-npm-overlay/archive/main.tar.gz"]
+nixpkgsArchive = "nixos-24.11"     # <-- EZ legyen, ne placeholder
 
 [variables]
 NODE_ENV = "production"
 NPM_CONFIG_PRODUCTION = "false"
 
 [phases.install]
+dependsOn = ["setup"]
 cmds = ["npm ci --include=dev"]
+cacheDirectories = ["/root/.npm"]
+paths = ["/app/node_modules/.bin"]
 
 [phases.build]
+dependsOn = ["install"]
 cmds = ["npm run prisma:generate", "npm run build"]
+cacheDirectories = ["node_modules/.cache"]
 
 [start]
 cmd = "npm run start"
