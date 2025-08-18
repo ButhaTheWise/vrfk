@@ -1,11 +1,8 @@
 [phases.setup]
-nixPkgs = ["nodejs_24", "openssl", "sqlite", "bash", "curl", "wget"]
+# Node 22 van a 24.11-ben
+nixPkgs = ["nodejs_22", "openssl", "sqlite", "python3", "gnumake", "gcc", "pkg-config"]
 nixOverlays = ["https://github.com/railwayapp/nix-npm-overlay/archive/main.tar.gz"]
-nixpkgsArchive = "nixos-24.11"     # <-- EZ legyen, ne placeholder
-
-[variables]
-NODE_ENV = "production"
-NPM_CONFIG_PRODUCTION = "false"
+nixpkgsArchive = "nixos-24.11"
 
 [phases.install]
 dependsOn = ["setup"]
@@ -19,4 +16,6 @@ cmds = ["npm run prisma:generate", "npm run build"]
 cacheDirectories = ["node_modules/.cache"]
 
 [start]
-cmd = "npm run start"
+# ha szeretnéd, futtasd a migrációkat induláskor:
+# cmd = "npm run prisma:deploy && node build/index.js"
+cmd = "node build/index.js"
