@@ -1,5 +1,6 @@
 [phases.setup]
 nixPkgs = ["nodejs_24", "openssl", "sqlite", "bash", "curl", "wget"]
+nixpkgsArchive = "<IDE ÍRD AZ ÚJ NIXPKGS COMMIT HASH-T>"  # pl. a nixos-24.11 vagy nixos-unstable aktuális commitja
 
 [variables]
 NODE_ENV = "production"
