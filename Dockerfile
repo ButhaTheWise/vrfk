@@ -42,6 +42,6 @@ HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
   CMD curl -fsS "http://localhost:${PORT}/health" || exit 1
 
 # Indítás: migrációk -> app
-CMD sh -c "./node_modules/.bin/prisma migrate deploy && node build/index.js"
+CMD ["npm", "start"]
 
 EXPOSE 3000
