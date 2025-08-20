@@ -1,12 +1,6 @@
 import { getSession } from '$lib/server/session.js';
 
 export const handle = async ({ event, resolve }) => {
-  if (event.url.pathname === '/health') {
-    return new Response('ok', {
-      status: 200,
-      headers: { 'content-type': 'text/plain', 'cache-control': 'no-store' }
-    });
-  }
 
   const sid = event.cookies.get('sid');
   if (sid) {
