@@ -17,5 +17,5 @@ cacheDirectories = ["node_modules/.cache"]
 
 [start]
 # ha szeretnéd, futtasd a migrációkat induláskor:
-cmd = "npm run prisma:deploy && node build/index.js"
-cmd = "node build/index.js"
+cmd1 = "npm run prisma:deploy && node build/index.js"
+cmd2 = "node build/index.js"
