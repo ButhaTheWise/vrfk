@@ -1,43 +1,40 @@
-# --- build stage ---
-FROM node:22-bookworm-slim AS build
+# --- Builder ---
+FROM node:22-bookworm-slim AS builder
 WORKDIR /app
 
-# ha fordítani kell (pl. better-sqlite3), kell python+build-eszközök
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 make g++ \
-  && rm -rf /var/lib/apt/lists/*
-ENV npm_config_python=python3
-
-# csak a lock + package, hogy a cache működjön
-COPY package*.json ./
+# Függőségek
+COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
 RUN npm ci
 
-# Prisma kliens generálás a buildhez
-COPY prisma ./prisma
-RUN npx prisma generate
-
-# a többi forrás
+# Forrás + build
 COPY . .
+# Prisma kliens kell a buildhez is (biztonság kedvéért):
+RUN npx prisma generate
 RUN npm run build
 
-# --- runtime stage ---
+# --- Runner ---
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
+
+# Csak runtime függőségek (de a prisma CLI is dep lett, így megjön)
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev
+
+# Artefaktok + prisma mappa (migrations miatt)
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/prisma ./prisma
+
+# Tartós DB hely
+VOLUME ["/app/data"]
+
 ENV NODE_ENV=production
-ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# csomagok + csak prod függőségek
-COPY --from=build /app/package*.json ./
-COPY --from=build /app/node_modules ./node_modules
-RUN npm prune --omit=dev
+# Healthcheck (opcionális)
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD node -e "fetch('http://localhost:'+(process.env.PORT||3000)+'/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
 
-# build & prisma
-COPY --from=build /app/build ./build
-COPY --from=build /app/prisma ./prisma
+# Indítás: migrációk, majd a node server
+CMD sh -c "prisma migrate deploy && node build/index.js"
 
 EXPOSE 3000
-HEALTHCHECK NONE
-
-# opcionális: migrációk induláskor (nem bukik, ha nincs)
-CMD ["sh","-lc","npm run prisma:deploy || true; node build"]
