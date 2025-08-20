@@ -1,0 +1,9 @@
+.git
+node_modules
+.vscode
+*.log
+coverage
+playwright*
+tests
+Dockerfile
+.dockerignore
