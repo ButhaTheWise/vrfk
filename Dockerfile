@@ -1,6 +1,12 @@
 # --- build stage ---
-FROM node:24-bookworm-slim AS build
+FROM node:22-bookworm-slim AS build
 WORKDIR /app
+
+# ha fordítani kell (pl. better-sqlite3), kell python+build-eszközök
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
+ENV npm_config_python=python3
 
 # csak a lock + package, hogy a cache működjön
 COPY package*.json ./
@@ -15,7 +21,7 @@ COPY . .
 RUN npm run build
 
 # --- runtime stage ---
-FROM node:24-bookworm-slim AS runner
+FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
@@ -31,9 +37,7 @@ COPY --from=build /app/build ./build
 COPY --from=build /app/prisma ./prisma
 
 EXPOSE 3000
-
-# NINCS konténer healthcheck
 HEALTHCHECK NONE
 
-# opcionális: migrációk futtatása induláskor (nem bukik, ha nincs)
+# opcionális: migrációk induláskor (nem bukik, ha nincs)
 CMD ["sh","-lc","npm run prisma:deploy || true; node build"]
