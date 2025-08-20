@@ -1,9 +1,14 @@
-.git
+# build cache minimalizálás
 node_modules
-.vscode
-*.log
-coverage
-playwright*
-tests
+.git
+.gitignore
 Dockerfile
-.dockerignore
+docker-compose.yml
+npm-debug.log
+pnpm-lock.yaml
+yarn.lock
+dist
+.svelte-kit
+.vscode
+.env
+.env.*
