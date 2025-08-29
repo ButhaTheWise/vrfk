@@ -1,7 +1,6 @@
 # Node / build artefaktok
 node_modules
 dist
-.svelte-kit
 build
 *.log
 

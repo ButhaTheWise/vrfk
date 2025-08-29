@@ -1,0 +1,181 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "name": "internal",
+    "src": ".svelte-kit/generated/server/internal.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js"
+    ]
+  },
+  "_client.js": {
+    "file": "chunks/client.js",
+    "name": "client",
+    "imports": [
+      "_index.js",
+      "_exports.js",
+      "_index2.js"
+    ]
+  },
+  "_exports.js": {
+    "file": "chunks/exports.js",
+    "name": "exports"
+  },
+  "_index.js": {
+    "file": "chunks/index.js",
+    "name": "index"
+  },
+  "_index2.js": {
+    "file": "chunks/index2.js",
+    "name": "index",
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "name": "internal",
+    "imports": [
+      "_index.js"
+    ],
+    "dynamicImports": [
+      "src/hooks.server.js"
+    ]
+  },
+  "_prisma.js": {
+    "file": "chunks/prisma.js",
+    "name": "prisma"
+  },
+  "_session.js": {
+    "file": "chunks/session.js",
+    "name": "session",
+    "imports": [
+      "_prisma.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "name": "entries/fallbacks/error.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_client.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "name": "index",
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_internal.js",
+      "_exports.js",
+      "_index2.js"
+    ]
+  },
+  "src/hooks.server.js": {
+    "file": "chunks/hooks.server.js",
+    "name": "hooks.server",
+    "src": "src/hooks.server.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_session.js"
+    ]
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "name": "entries/pages/_layout.svelte",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.D0MFxYrX.css"
+    ]
+  },
+  "src/routes/+page.server.js": {
+    "file": "entries/pages/_page.server.js",
+    "name": "entries/pages/_page.server",
+    "src": "src/routes/+page.server.js",
+    "isEntry": true
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "name": "entries/pages/_page.svelte",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_client.js",
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.CPCCGXz1.css"
+    ]
+  },
+  "src/routes/api/admin/users/+server.js": {
+    "file": "entries/endpoints/api/admin/users/_server.js",
+    "name": "entries/endpoints/api/admin/users/_server",
+    "src": "src/routes/api/admin/users/+server.js",
+    "isEntry": true,
+    "imports": [
+      "_prisma.js"
+    ]
+  },
+  "src/routes/api/admin/users/[id]/+server.js": {
+    "file": "entries/endpoints/api/admin/users/_id_/_server.js",
+    "name": "entries/endpoints/api/admin/users/_id_/_server",
+    "src": "src/routes/api/admin/users/[id]/+server.js",
+    "isEntry": true,
+    "imports": [
+      "_prisma.js"
+    ]
+  },
+  "src/routes/api/admin/users/[id]/role/+server.js": {
+    "file": "entries/endpoints/api/admin/users/_id_/role/_server.js",
+    "name": "entries/endpoints/api/admin/users/_id_/role/_server",
+    "src": "src/routes/api/admin/users/[id]/role/+server.js",
+    "isEntry": true,
+    "imports": [
+      "_prisma.js"
+    ]
+  },
+  "src/routes/api/auth/login/+server.js": {
+    "file": "entries/endpoints/api/auth/login/_server.js",
+    "name": "entries/endpoints/api/auth/login/_server",
+    "src": "src/routes/api/auth/login/+server.js",
+    "isEntry": true,
+    "imports": [
+      "_prisma.js",
+      "_session.js"
+    ]
+  },
+  "src/routes/api/auth/logout/+server.js": {
+    "file": "entries/endpoints/api/auth/logout/_server.js",
+    "name": "entries/endpoints/api/auth/logout/_server",
+    "src": "src/routes/api/auth/logout/+server.js",
+    "isEntry": true,
+    "imports": [
+      "_session.js"
+    ]
+  },
+  "src/routes/api/auth/me/+server.js": {
+    "file": "entries/endpoints/api/auth/me/_server.js",
+    "name": "entries/endpoints/api/auth/me/_server",
+    "src": "src/routes/api/auth/me/+server.js",
+    "isEntry": true
+  },
+  "src/routes/api/auth/register/+server.js": {
+    "file": "entries/endpoints/api/auth/register/_server.js",
+    "name": "entries/endpoints/api/auth/register/_server",
+    "src": "src/routes/api/auth/register/+server.js",
+    "isEntry": true,
+    "imports": [
+      "_prisma.js"
+    ]
+  }
+}

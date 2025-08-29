@@ -1,7 +1,6 @@
 @"
 # Node/SvelteKit
 node_modules
-.svelte-kit
 build
 # Env és titkok
 .env
