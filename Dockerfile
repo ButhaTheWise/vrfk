@@ -24,8 +24,8 @@ RUN npm prune --omit=dev
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 
-# Healthcheck-hez hasznos
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
+# Healthcheck-hez curl és wget telepítése
+RUN apt-get update && apt-get install -y --no-install-recommends curl wget \
   && rm -rf /var/lib/apt/lists/*
 
 # A builderből hozzuk az előkészített node_modules-t és artefaktokat
@@ -40,12 +40,9 @@ VOLUME ["/app/data"]
 ENV NODE_ENV=production
 ENV PORT=3000
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl wget \
-  && rm -rf /var/lib/apt/lists/*
-
-# Healthcheck kikapcsolva - Coolify kezeli
- HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-   CMD curl -fsS "http://localhost:${PORT}/health" || exit 1
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD curl -fsS "http://localhost:${PORT}/health" || exit 1
 
 # Indítás: migrációk -> app (npm scriptből)
 CMD ["npm", "start"]
