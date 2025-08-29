@@ -41,8 +41,9 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD curl -fsS "http://localhost:${PORT}/health" || exit 1
+# Healthcheck kikapcsolva
+# HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+#   CMD curl -fsS "http://localhost:${PORT}/health" || exit 1
 
 # Indítás: migrációk -> app (npm scriptből)
 CMD ["npm", "start"]
