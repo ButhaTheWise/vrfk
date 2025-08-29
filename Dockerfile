@@ -2,41 +2,39 @@
 FROM node:22-bookworm-slim AS builder
 WORKDIR /app
 
-# Csak a manifest fájlokat másoljuk a gyors cache miatt
+# Csak a manifest + prisma
 COPY package*.json ./
 COPY prisma ./prisma
 
-# OpenSSL a Prisma figyelmeztetés miatt
+# OpenSSL a Prisma miatt
 RUN apt-get update && apt-get install -y --no-install-recommends openssl \
   && rm -rf /var/lib/apt/lists/*
 
-# Production-only függőségek (postinstall lefut: prisma generate)
-RUN npm ci --omit=dev
+# 1. Fejlesztői függőségekkel (vite, svelte-kit is jön)
+RUN npm ci
 
-# Forrás + build
+# 2. Forrás + build
 COPY . .
 RUN npm run build
+
+# 3. Prod only node_modules (itt kivágjuk a dev dep-eket)
+RUN npm prune --omit=dev
 
 # --- Runner ---
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 
-# Debug / healthcheck eszközök
+# Debug / healthcheck eszközök (ha nem kellenek, kidobható)
 RUN apt-get update && apt-get install -y --no-install-recommends curl wget \
   && rm -rf /var/lib/apt/lists/*
 
-# Builderből másolás
+# Builderből hozunk mindent
 COPY --from=builder /app /app
 
-# Tartós adatbázis mappa (SQLite-hoz)
 VOLUME ["/app/data"]
 
 ENV NODE_ENV=production
 ENV PORT=3000
-
-# Healthcheck kikapcsolva (ha kell, aktiválható)
-# HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-#   CMD curl -fsS "http://localhost:${PORT}/health" || exit 1
 
 EXPOSE 3000
 CMD ["npm", "start"]
