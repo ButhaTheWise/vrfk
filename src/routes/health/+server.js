@@ -1,1 +1,3 @@
-export const GET = () => new Response('ok');
+export async function GET() {
+  return new Response('OK', { status: 200 });
+}
