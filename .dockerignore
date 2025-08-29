@@ -1,23 +1,27 @@
-# verziókezelés
-.git
-.gitignore
-
-# más csomagkezelők lock fájljai (npm-nél feleslegesek)
-yarn.lock
-pnpm-lock.yaml
-
-# futás közben generált fájlok
+# Node / build artefaktok
 node_modules
 dist
 .svelte-kit
+build
+*.log
 
-# ideiglenes / lokális beállítások
-.vscode
-npm-debug.log
-
-# docker-compose definíciókat ne másoljon
-docker-compose.yml
-
-# környezeti változók
+# Környezet
 .env
 .env.*
+.vscode
+.idea
+
+# Git / CI
+.git
+.gitignore
+.github
+.gitlab-ci.yml
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Teszt / docs
+coverage
+tests
+*.md

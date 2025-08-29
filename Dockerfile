@@ -2,39 +2,46 @@
 FROM node:22-bookworm-slim AS builder
 WORKDIR /app
 
-# Csak a manifest + prisma
-COPY package*.json ./
+# Csak a manifest + prisma a cache miatt
+COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
 COPY prisma ./prisma
 
-# OpenSSL a Prisma miatt
+# OpenSSL a Prisma figyelmeztetés miatt
 RUN apt-get update && apt-get install -y --no-install-recommends openssl \
   && rm -rf /var/lib/apt/lists/*
 
-# 1. Fejlesztői függőségekkel (vite, svelte-kit is jön)
+# Függőségek (lefut a postinstall -> prisma generate)
 RUN npm ci
 
-# 2. Forrás + build
+# Forrás + build
 COPY . .
 RUN npm run build
 
-# 3. Prod only node_modules (itt kivágjuk a dev dep-eket)
+# Prod node_modules előkészítése
 RUN npm prune --omit=dev
+
 
 # --- Runner ---
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 
-# Debug / healthcheck eszközök (ha nem kellenek, kidobható)
-RUN apt-get update && apt-get install -y --no-install-recommends curl wget \
+# Healthcheck-hez curl
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
   && rm -rf /var/lib/apt/lists/*
 
-# Builderből hozunk mindent
-COPY --from=builder /app /app
+# Csak a minimális fájlokat hozzuk a builderből
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/prisma ./prisma
 
+# Tartós adatbázis hely (pl. SQLite)
 VOLUME ["/app/data"]
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
 EXPOSE 3000
+
+# Indítás (migráció + app)
 CMD ["npm", "start"]
